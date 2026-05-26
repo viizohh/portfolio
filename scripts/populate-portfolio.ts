@@ -458,7 +458,7 @@ async function main() {
       await client.create(doc)
       console.log(`  ✅ Created successfully\n`)
     } catch (error) {
-      console.error(`  ❌ Error creating ${item.title}:`, error.message)
+      console.error(`  ❌ Error creating ${item.title}:`, error instanceof Error ? error.message : String(error))
     }
   }
 
