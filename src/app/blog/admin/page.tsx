@@ -43,26 +43,54 @@ export default function AdminPage() {
     setPassword('')
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitMessage('')
 
-    // For now, just show an alert with the data
-    // Later this will commit to GitHub
-    const newEntry = {
-      id: String(blogEntries.length + 1),
-      date,
-      title,
-      content,
-      tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+    try {
+      const newEntry = {
+        id: String(blogEntries.length + 1),
+        date,
+        title,
+        content,
+        tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+      }
+
+      const response = await fetch('/api/blog/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newEntry),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create entry')
+      }
+
+      setSubmitMessage('✓ Entry created successfully! Refreshing...')
+
+      // Clear form
+      setDate('')
+      setTitle('')
+      setContent('')
+      setTags('')
+
+      // Redirect to the new entry after 2 seconds
+      setTimeout(() => {
+        router.push(`/blog/${newEntry.date.substring(0, 7)}/${newEntry.date}`)
+      }, 2000)
+    } catch (error) {
+      setSubmitMessage(`✗ Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    } finally {
+      setIsSubmitting(false)
     }
-
-    alert('Entry created! (Not yet saved - GitHub integration needed)\n\n' + JSON.stringify(newEntry, null, 2))
-
-    // Clear form
-    setDate('')
-    setTitle('')
-    setContent('')
-    setTags('')
   }
 
   // Set default date to today
@@ -193,13 +221,21 @@ export default function AdminPage() {
             />
           </div>
 
+          {/* Submit message */}
+          {submitMessage && (
+            <div className={`p-4 rounded border ${submitMessage.startsWith('✓') ? 'bg-green-500/10 border-green-500/30 text-green-600' : 'bg-red-500/10 border-red-500/30 text-red-600'}`}>
+              <p className="text-xs font-mono">{submitMessage}</p>
+            </div>
+          )}
+
           {/* Actions */}
           <div className="flex gap-4">
             <button
               type="submit"
-              className="flex-1 px-4 py-3 bg-foreground text-background font-mono text-sm rounded hover:opacity-80 transition-opacity"
+              disabled={isSubmitting}
+              className="flex-1 px-4 py-3 bg-foreground text-background font-mono text-sm rounded hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Entry
+              {isSubmitting ? 'Creating...' : 'Create Entry'}
             </button>
             <button
               type="button"
@@ -214,8 +250,8 @@ export default function AdminPage() {
         {/* Note */}
         <div className="mt-12 p-4 bg-foreground/5 border border-border rounded">
           <p className="text-xs font-mono text-muted">
-            Note: GitHub integration not yet implemented. Entries are not saved permanently.
-            To add entries now, manually edit /src/data/blog.ts
+            Note: Entries are automatically committed to GitHub and deployed via Vercel.
+            Changes may take 2-3 minutes to appear on the live site.
           </p>
         </div>
       </div>
