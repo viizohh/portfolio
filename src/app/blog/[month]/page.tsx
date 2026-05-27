@@ -131,75 +131,53 @@ export default function MonthPage() {
             </div>
           </div>
 
-          {/* Flower petals for days */}
+          {/* Floating day entries */}
           {hasEntries ? (
-            <div className="absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%, -50%)' }}>
+            <div className="fixed inset-0 z-20">
               {daysWithEntries.map((day, index) => {
-                const angle = (Math.PI * 2 * index) / daysWithEntries.length - Math.PI / 2
-                const distance = 180
-                const x = Math.cos(angle) * distance
-                const y = Math.sin(angle) * distance
+                // Generate random position around center
+                const angle = (Math.random() * Math.PI * 2)
+                const minDistance = 200
+                const maxDistance = 400
+                const distance = minDistance + Math.random() * (maxDistance - minDistance)
 
-                // Lines from center to petal
-                const centralIconRadius = 60
-                const petalIconRadius = 25
-                const lineStartX = Math.cos(angle) * centralIconRadius
-                const lineStartY = Math.sin(angle) * centralIconRadius
-                const lineEndX = Math.cos(angle) * (distance - petalIconRadius)
-                const lineEndY = Math.sin(angle) * (distance - petalIconRadius)
+                // Convert to percentage from center (50%, 50%)
+                const xOffset = Math.cos(angle) * distance
+                const yOffset = Math.sin(angle) * distance
+                const x = `calc(50% + ${xOffset}px)`
+                const y = `calc(50% + ${yOffset}px)`
 
                 return (
-                  <div key={day}>
-                    {/* Line */}
-                    <motion.svg
-                      className="absolute top-0 left-0 pointer-events-none"
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'visible',
-                      }}
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.03 }}
+                  <motion.div
+                    key={day}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.05,
+                      type: 'spring',
+                      stiffness: 200,
+                      damping: 20
+                    }}
+                    className="absolute animate-float"
+                    style={{
+                      left: x,
+                      top: y,
+                      transform: 'translate(-50%, -50%)',
+                      animationDelay: `${index * 0.2}s`,
+                      animationDuration: `${8 + (index % 4)}s`,
+                    }}
+                  >
+                    <button
+                      onClick={() => handleDayClick(day)}
+                      className="flex flex-col items-center gap-1 hover:scale-110 transition-transform"
                     >
-                      <motion.line
-                        x1={lineStartX}
-                        y1={lineStartY}
-                        x2={lineEndX}
-                        y2={lineEndY}
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        className="text-foreground/30"
-                      />
-                    </motion.svg>
-
-                    {/* Day petal */}
-                    <motion.div
-                      initial={{ scale: 0, opacity: 0, x: lineStartX, y: lineStartY }}
-                      animate={{ scale: 1, opacity: 1, x, y }}
-                      transition={{
-                        duration: 0.5,
-                        delay: index * 0.03,
-                        type: 'spring',
-                        stiffness: 200,
-                        damping: 20
-                      }}
-                      className="absolute pointer-events-auto"
-                      style={{ top: 0, left: 0 }}
-                    >
-                      <div className="relative" style={{ transform: 'translate(-50%, -50%)' }}>
-                        <button
-                          onClick={() => handleDayClick(day)}
-                          className="flex flex-col items-center gap-1 hover:scale-110 transition-transform"
-                        >
-                          <div dangerouslySetInnerHTML={{ __html: generateRandomIcon(50) }} />
-                          <div className="text-xs font-mono text-foreground">
-                            {day}
-                          </div>
-                        </button>
+                      <div dangerouslySetInnerHTML={{ __html: generateRandomIcon(50) }} />
+                      <div className="text-xs font-mono text-foreground">
+                        {day}
                       </div>
-                    </motion.div>
-                  </div>
+                    </button>
+                  </motion.div>
                 )
               })}
             </div>
