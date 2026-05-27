@@ -47,6 +47,34 @@ function generateRandomIcon(size: number): string {
   return generateCircleSpeaker(size, base, accent)
 }
 
+function generateSquareIcon(size: number, base: string, accent: string): string {
+  const center = size / 2
+  const squareSize = size * 0.7
+  const innerSquare = size * 0.4
+  const dotSize = size * 0.08
+
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+      <rect x="${center - squareSize/2}" y="${center - squareSize/2}"
+            width="${squareSize}" height="${squareSize}"
+            fill="${base}" rx="${squareSize * 0.1}" />
+      <rect x="${center - innerSquare/2}" y="${center - innerSquare/2}"
+            width="${innerSquare}" height="${innerSquare}"
+            fill="${DARK}" rx="${innerSquare * 0.1}" />
+      <circle cx="${center - innerSquare/4}" cy="${center - innerSquare/4}" r="${dotSize}" fill="${accent}" />
+      <circle cx="${center + innerSquare/4}" cy="${center - innerSquare/4}" r="${dotSize}" fill="${accent}" />
+      <circle cx="${center - innerSquare/4}" cy="${center + innerSquare/4}" r="${dotSize}" fill="${accent}" />
+      <circle cx="${center + innerSquare/4}" cy="${center + innerSquare/4}" r="${dotSize}" fill="${accent}" />
+    </svg>
+  `
+}
+
+function generateRandomDayIcon(size: number): string {
+  const base = randomColor()
+  const accent = randomColor()
+  return generateSquareIcon(size, base, accent)
+}
+
 const MONTH_NAMES = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 // Background month positions (similar to blog main page)
@@ -170,7 +198,7 @@ export default function MonthPage() {
                       onClick={() => handleDayClick(day)}
                       className="flex flex-col items-center gap-1 hover:scale-110 transition-transform"
                     >
-                      <div dangerouslySetInnerHTML={{ __html: generateRandomIcon(50) }} />
+                      <div dangerouslySetInnerHTML={{ __html: generateRandomDayIcon(50) }} />
                       <div className="text-xs font-mono text-foreground">
                         {day}
                       </div>
