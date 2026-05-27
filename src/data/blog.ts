@@ -8,7 +8,7 @@ export interface BlogEntry {
 }
 
 export const blogEntries: BlogEntry[] = [
-  // Example entries - replace with your own
+// Example entries - replace with your own
   {
     id: '1',
     date: '2025-01-15',
@@ -18,7 +18,14 @@ export const blogEntries: BlogEntry[] = [
 This supports markdown-style formatting and multiple paragraphs.
 
 You can edit this through the admin panel.`,
-    tags: ['example', 'first-post'],
+    tags: ['example', 'first-post'
+  {
+    id: '3',
+    date: '2026-05-27',
+    title: "first entry",
+    content: "Hey guys, welcome to my blog this is a little easter egg aside from the portfolio I might make the whole thing a password hidden somewhere in the website but this is just to serve a purpose of showing anyone what I'm doing in a given week or day, if I'm learning something or conducting any testing.\n\nthanks for looking :D\n\n-Hunter",
+  },
+],
   },
   {
     id: '2',
