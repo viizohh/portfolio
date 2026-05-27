@@ -38,12 +38,15 @@ const config: Config = {
       },
       keyframes: {
         float: {
-          '0%, 100%': { transform: 'translate(-50%, -50%) translateY(0px)' },
-          '50%': { transform: 'translate(-50%, -50%) translateY(-20px)' },
+          '0%': { transform: 'translate(-50%, -50%) translate(0px, 0px)' },
+          '25%': { transform: 'translate(-50%, -50%) translate(20px, -15px)' },
+          '50%': { transform: 'translate(-50%, -50%) translate(0px, -20px)' },
+          '75%': { transform: 'translate(-50%, -50%) translate(-20px, -15px)' },
+          '100%': { transform: 'translate(-50%, -50%) translate(0px, 0px)' },
         },
       },
       animation: {
-        float: 'float 8s ease-in-out infinite',
+        float: 'float 10s ease-in-out infinite',
       },
     },
   },

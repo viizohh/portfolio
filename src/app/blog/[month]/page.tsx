@@ -102,18 +102,16 @@ export default function MonthPage() {
 
   return (
     <div className="min-h-screen pt-20 relative overflow-hidden">
-      {/* Background floating months */}
+      {/* Background fixed corner months */}
       <div className="fixed inset-0 z-0 opacity-30">
         {backgroundMonths.map((m, i) => (
           <div
             key={m.key}
-            className="absolute animate-float"
+            className="absolute"
             style={{
               left: m.x,
               top: m.y,
               transform: 'translate(-50%, -50%)',
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: `${7 + (i % 3)}s`,
             }}
             dangerouslySetInnerHTML={{ __html: m.svg }}
           />
