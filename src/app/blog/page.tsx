@@ -92,24 +92,24 @@ export default function BlogPage() {
   const [months, setMonths] = useState<MonthData[]>([])
 
   const generateMonths = () => {
+    const currentMonth = new Date().getMonth()
     const monthData: MonthData[] = []
-    for (let i = 0; i < 12; i++) {
-      const month = i + 1
-      const label = MONTH_NAMES[i]
-      const slug = `${currentYear}-${String(month).padStart(2, '0')}`
-      const position = MONTH_POSITIONS[i]
 
-      monthData.push({
-        year: currentYear,
-        month,
-        label,
-        slug,
-        svg: generateRandomIcon(position.size),
-        x: position.x,
-        y: position.y,
-        size: position.size,
-      })
-    }
+    const month = currentMonth + 1
+    const label = MONTH_NAMES[currentMonth]
+    const slug = `${currentYear}-${String(month).padStart(2, '0')}`
+    const position = { x: '50%', y: '50%', size: 120 }
+
+    monthData.push({
+      year: currentYear,
+      month,
+      label,
+      slug,
+      svg: generateRandomIcon(position.size),
+      x: position.x,
+      y: position.y,
+      size: position.size,
+    })
 
     setMonths(monthData)
   }
