@@ -129,39 +129,42 @@ export default function MonthPage() {
   }, [])
 
   return (
-    <div className="min-h-screen pt-20 relative overflow-auto scrollbar-hide" style={{
+    <div className="relative overflow-auto scrollbar-hide" style={{
+      width: '100vw',
+      height: '100vh',
       WebkitOverflowScrolling: 'touch'
     }}>
-      {/* Background fixed corner months */}
-      <div className="fixed inset-0 z-0 opacity-30">
-        {backgroundMonths.map((m, i) => (
-          <div
-            key={m.key}
-            className="absolute"
-            style={{
-              left: m.x,
-              top: m.y,
-              transform: 'translate(-50%, -50%)',
-            }}
-            dangerouslySetInnerHTML={{ __html: m.svg }}
-          />
-        ))}
-      </div>
+      {/* Scrollable content area - forces scroll */}
+      <div className="relative" style={{ width: '300vw', height: '300vh' }}>
+        {/* Background fixed corner months */}
+        <div className="fixed inset-0 z-0 opacity-30 pointer-events-none">
+          {backgroundMonths.map((m, i) => (
+            <div
+              key={m.key}
+              className="absolute"
+              style={{
+                left: m.x,
+                top: m.y,
+                transform: 'translate(-50%, -50%)',
+              }}
+              dangerouslySetInnerHTML={{ __html: m.svg }}
+            />
+          ))}
+        </div>
 
-      {/* Center: Month icon and flower */}
-      <div className="fixed inset-0 z-10 flex items-center justify-center">
-        {/* Central month icon */}
-        <div className="relative">
+        {/* Center: Month icon - fixed to viewport center */}
+        <div className="fixed inset-0 z-10 flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center">
             <div dangerouslySetInnerHTML={{ __html: generateRandomIcon(120) }} />
             <div className="text-sm font-mono text-foreground mt-3">
               {monthName} {year}
             </div>
           </div>
+        </div>
 
-          {/* Floating day entries */}
-          {hasEntries ? (
-            <div className="absolute z-20" style={{ minWidth: '200vw', minHeight: '200vh', left: '-50vw', top: '-50vh' }}>
+        {/* Floating day entries - absolute within scrollable area */}
+        {hasEntries ? (
+          <div className="absolute z-20 inset-0" style={{ width: '300vw', height: '300vh' }}>
               {daysWithEntries.map((day, index) => {
                 // Generate random position around center
                 const angle = (Math.random() * Math.PI * 2)
