@@ -124,8 +124,7 @@ export default function AdminPage() {
       <div className="min-h-screen pt-20 flex items-center justify-center px-6">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-medium text-foreground mb-2">Blog Admin</h1>
-            <p className="text-xs font-mono text-muted">Password required</p>
+            <h1 className="text-2xl font-medium text-foreground mb-2">Secret Passage</h1>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -134,7 +133,7 @@ export default function AdminPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
+                placeholder="Enter phrase"
                 className="w-full px-4 py-3 bg-foreground/5 border border-border text-foreground font-mono text-sm rounded focus:outline-none focus:border-foreground/50 transition-colors"
                 autoFocus
               />
@@ -147,17 +146,17 @@ export default function AdminPage() {
             <button
               type="submit"
               disabled={isLoggingIn}
-              className="w-full px-4 py-3 bg-foreground text-background font-mono text-sm rounded hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 text-foreground font-mono text-sm hover:opacity-60 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              {isLoggingIn ? 'Checking...' : 'Login'}
+              {isLoggingIn ? '...' : 'press me'}
             </button>
 
             <button
               type="button"
               onClick={() => router.push('/blog')}
-              className="w-full px-4 py-3 border border-border text-foreground font-mono text-xs rounded hover:bg-foreground/5 transition-colors"
+              className="w-full px-4 py-3 text-muted font-mono text-xs hover:text-foreground transition-colors"
             >
-              ← Back to Blog
+              back
             </button>
           </form>
         </div>
