@@ -4,13 +4,12 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { blogEntries } from '@/data/blog'
 
-const ADMIN_PASSWORD = 'password1'
-
 export default function AdminPage() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   // Form state
   const [date, setDate] = useState('')
@@ -26,14 +25,33 @@ export default function AdminPage() {
     }
   }, [])
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (password === ADMIN_PASSWORD) {
-      localStorage.setItem('blog_admin_auth', 'true')
-      setIsAuthenticated(true)
-      setError('')
-    } else {
-      setError('Incorrect password')
+    setIsLoggingIn(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/blog/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        localStorage.setItem('blog_admin_auth', 'true')
+        setIsAuthenticated(true)
+        setPassword('')
+      } else {
+        setError(data.error || 'Incorrect password')
+      }
+    } catch (error) {
+      setError('Login failed. Please try again.')
+    } finally {
+      setIsLoggingIn(false)
     }
   }
 
@@ -128,9 +146,10 @@ export default function AdminPage() {
 
             <button
               type="submit"
-              className="w-full px-4 py-3 bg-foreground text-background font-mono text-sm rounded hover:opacity-80 transition-opacity"
+              disabled={isLoggingIn}
+              className="w-full px-4 py-3 bg-foreground text-background font-mono text-sm rounded hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Login
+              {isLoggingIn ? 'Checking...' : 'Login'}
             </button>
 
             <button
