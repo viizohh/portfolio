@@ -557,7 +557,7 @@ export default function InteractiveSpeakerNav({
 
                                     {item.technologies && item.technologies.length > 0 && (
                                       <div className="flex flex-wrap gap-1">
-                                        {item.technologies.slice(0, 4).map((tech) => (
+                                        {item.technologies.slice(0, 4).map((tech: string) => (
                                           <span
                                             key={tech}
                                             className="text-xs text-muted font-mono bg-foreground/5 px-2 py-1 rounded"
