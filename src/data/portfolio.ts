@@ -439,10 +439,10 @@ Impact:
 Finding 2: Missing Content-Security-Policy
 
 Security Assessment:
-- ❌ No CSP header present
-- ❌ No X-Frame-Options (clickjacking risk)
-- ❌ No Referrer-Policy (information leakage)
-- ✅ HSTS implemented (max-age=31536000)
+- No CSP header present
+- No X-Frame-Options (clickjacking risk)
+- No Referrer-Policy (information leakage)
+- HSTS implemented (max-age=31536000)
 
 Impact:
 - No defense-in-depth against XSS attacks
@@ -526,11 +526,11 @@ Passive security assessment of Off-White's e-commerce platform revealing missing
 Finding 1: Missing Content-Security-Policy
 
 Security Header Assessment:
-- ❌ No Content-Security-Policy implemented
-- ✅ HSTS present (max-age=15552000)
-- ✅ X-Frame-Options: SAMEORIGIN
-- ✅ X-Content-Type-Options: nosniff
-- ✅ Referrer-Policy: strict-origin-when-cross-origin
+- No Content-Security-Policy implemented
+- HSTS present (max-age=15552000)
+- X-Frame-Options: SAMEORIGIN
+- X-Content-Type-Options: nosniff
+- Referrer-Policy: strict-origin-when-cross-origin
 
 Impact:
 - No defense-in-depth against XSS attacks
@@ -620,10 +620,10 @@ Technology Stack:
 - Region: US East (Virginia)
 
 Security Posture:
-- ✅ Strong foundation (HSTS, X-Frame-Options, nosniff, referrer policy)
-- ⚠️ Missing CSP (critical XSS defense gap)
-- ⚠️ Extensive infrastructure fingerprinting possible
-- ⚠️ Dual CDN architecture adds complexity
+- Strong foundation (HSTS, X-Frame-Options, nosniff, referrer policy)
+- Missing CSP (critical XSS defense gap)
+- Extensive infrastructure fingerprinting possible
+- Dual CDN architecture adds complexity
 
 Remediation:
 
@@ -752,11 +752,11 @@ Impact:
 Finding 6: Missing Security Header Assessment
 
 Assessment Status:
-- ❌ Unable to retrieve HTTP headers (connection timeout/blocking)
-- ❓ HSTS status unknown
-- ❓ CSP implementation unknown
-- ❓ X-Frame-Options unknown
-- ❓ Other security headers unverified
+- Unable to retrieve HTTP headers (connection timeout/blocking)
+- HSTS status unknown
+- CSP implementation unknown
+- X-Frame-Options unknown
+- Other security headers unverified
 
 Recommendation:
 Manual security header review required to assess defensive posture.
