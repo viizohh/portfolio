@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.Github_Token
 const GITHUB_OWNER = 'viizohh'
 const GITHUB_REPO = 'portfolio'
 const FILE_PATH = 'src/data/blog.ts'
