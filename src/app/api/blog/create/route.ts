@@ -51,17 +51,35 @@ export async function POST(request: NextRequest) {
     content: ${JSON.stringify(newEntry.content)},${newEntry.tags && newEntry.tags.length > 0 ? `\n    tags: ${JSON.stringify(newEntry.tags)},` : ''}
   },`
 
-    // Find the blogEntries array and add new entry
-    const arrayMatch = currentContent.match(/export const blogEntries: BlogEntry\[\] = \[([\s\S]*?)\]/)
-    if (!arrayMatch) {
+    // Find the blogEntries array - use more robust matching
+    // Look for the array start, then find the matching closing bracket
+    const startPattern = 'export const blogEntries: BlogEntry[] = ['
+    const startIndex = currentContent.indexOf(startPattern)
+    if (startIndex === -1) {
       throw new Error('Could not find blogEntries array')
     }
 
-    const existingEntries = arrayMatch[1].trim()
-    const newContent = currentContent.replace(
-      /export const blogEntries: BlogEntry\[\] = \[([\s\S]*?)\]/,
-      `export const blogEntries: BlogEntry[] = [\n${existingEntries ? existingEntries + '\n' : ''}${newEntryCode}\n]`
-    )
+    // Find the closing bracket by counting brackets
+    let bracketCount = 0
+    let endIndex = startIndex + startPattern.length
+    for (let i = endIndex; i < currentContent.length; i++) {
+      if (currentContent[i] === '[') bracketCount++
+      if (currentContent[i] === ']') {
+        if (bracketCount === 0) {
+          endIndex = i
+          break
+        }
+        bracketCount--
+      }
+    }
+
+    // Extract existing entries
+    const existingEntries = currentContent.substring(startIndex + startPattern.length, endIndex).trim()
+
+    // Build new content
+    const beforeArray = currentContent.substring(0, startIndex + startPattern.length)
+    const afterArray = currentContent.substring(endIndex)
+    const newContent = `${beforeArray}\n${newEntryCode}\n${existingEntries ? existingEntries + '\n' : ''}${afterArray}`
 
     // 3. Commit to GitHub
     const commitResponse = await fetch(
