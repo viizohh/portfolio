@@ -241,14 +241,17 @@ Reported to Alibaba Security Response Center (ASRC). Under investigation.`,
 **Target:** Prada.com luxury retail platform
 
 **Discovery:**
-Comprehensive subdomain enumeration revealed multiple publicly accessible development and staging environments containing sensitive systems:
+Comprehensive subdomain enumeration using automated reconnaissance tools revealed multiple publicly accessible development and staging environments containing sensitive systems:
 
-**Exposed Subdomains:**
-- \`beta2.prada.com\` - Development e-commerce environment
-- \`beta3.prada.com\` - Staging environment with production data
-- \`beta2-employeesonlinestore.prada.com\` - Employee portal with authentication bypass
-- \`aurablockchain.prada.com\` - NFT/blockchain infrastructure exposure
-- \`dev-api.prada.com\` - Development API with debug endpoints enabled
+**Methodology:**
+Utilized DNS enumeration, certificate transparency logs, and subdomain brute-forcing techniques to discover non-production environments inadvertently exposed to the public internet.
+
+**Findings:**
+- Development e-commerce environment with test transactions visible
+- Staging environment containing copies of production customer data
+- Employee-only portal accessible without authentication
+- Blockchain/NFT infrastructure with exposed API endpoints
+- Development API with debug mode enabled and verbose error messages
 
 **Security Issues:**
 - Missing authentication on development portals

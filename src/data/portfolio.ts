@@ -36,7 +36,7 @@ export const portfolioItems: PortfolioItem[] = [
     description: 'FastAPI-based web security scanner for reconnaissance and misconfiguration detection',
     technologies: ['Python', 'FastAPI', 'Web Security', 'CVE Detection'],
     featured: false,
-    content: 'FastAPI-based web security scanner built for reconnaissance and misconfiguration detection. Identifies exposed staging environments and outdated libraries on production sites with known CVEs. Successfully discovered security issues on production sites including Prada, detecting vulnerable dependencies and misconfigurations.',
+    content: 'FastAPI-based web security scanner built for reconnaissance and misconfiguration detection. Identifies exposed staging environments and outdated libraries on production sites with known CVEs. Successfully discovered security issues on production sites including luxury retail platforms, detecting vulnerable dependencies and misconfigurations.',
     publishedAt: '2026-02-01',
   },
   {
@@ -297,14 +297,17 @@ Severity: High (CVSS 7.8)
 Target: Prada.com luxury retail platform
 
 Discovery:
-Comprehensive subdomain enumeration revealed multiple publicly accessible development and staging environments containing sensitive systems.
+Comprehensive subdomain enumeration using automated reconnaissance tools revealed multiple publicly accessible development and staging environments containing sensitive systems.
 
-Exposed Subdomains:
-- beta2.prada.com - Development e-commerce environment
-- beta3.prada.com - Staging environment with production data
-- beta2-employeesonlinestore.prada.com - Employee portal with authentication bypass
-- aurablockchain.prada.com - NFT/blockchain infrastructure exposure
-- dev-api.prada.com - Development API with debug endpoints enabled
+Methodology:
+Utilized DNS enumeration, certificate transparency logs, and subdomain brute-forcing techniques to discover non-production environments inadvertently exposed to the public internet.
+
+Findings:
+- Development e-commerce environment with test transactions visible
+- Staging environment containing copies of production customer data
+- Employee-only portal accessible without authentication
+- Blockchain/NFT infrastructure with exposed API endpoints
+- Development API with debug mode enabled and verbose error messages
 
 Security Issues:
 - Missing authentication on development portals
@@ -667,10 +670,7 @@ Passive subdomain enumeration via certificate transparency logs revealed 50+ pub
 Finding 1: Internal Subdomain Exposure (CRITICAL)
 
 Exposed Internal Infrastructure:
-\`\`\`
-internal.gucci.com - Internal corporate infrastructure
-board.gucci.com - Executive/board portal
-\`\`\`
+Subdomain enumeration revealed internal corporate infrastructure and executive portal endpoints publicly accessible via DNS.
 
 Impact:
 - Internal infrastructure hostname publicly discoverable
@@ -680,39 +680,33 @@ Impact:
 - Information disclosure about organizational structure
 
 Attack Vectors:
-1. Targeted Phishing: Craft emails referencing internal.gucci.com
-2. Subdomain Takeover: If DNS points to decommissioned resources
-3. Social Engineering: Use discovered internal URLs for credibility
-4. Credential Harvesting: Target board.gucci.com for executive credentials
+1. Targeted Phishing: Craft emails referencing legitimate internal URLs for social engineering
+2. Subdomain Takeover: If DNS points to decommissioned cloud resources
+3. Social Engineering: Use discovered internal URLs for credibility in attacks
+4. Credential Harvesting: Target executive portals for high-value credentials
 
 Finding 2: Employee Infrastructure Exposure
 
 Discovered Employee Portals:
-\`\`\`
-employeestore.gucci.com - Employee discount store
-employeestore-api.gucci.com - Employee store API
-careers.gucci.com - Recruiting platform
-\`\`\`
+Subdomain enumeration revealed multiple employee-facing portals including discount store infrastructure, associated API endpoints, and HR/recruiting platforms.
 
 Impact:
 - Employee portal enumeration enables targeted attacks
-- API endpoints exposed (employeestore-api.gucci.com)
+- API endpoints exposed for reconnaissance
 - Phishing campaigns can reference legitimate employee URLs
 - Internal discount system exposed to reconnaissance
 - HR/recruiting platform discoverable
 
 Attack Scenarios:
-1. Phishing emails referencing employeestore.gucci.com for credibility
-2. API enumeration on employeestore-api.gucci.com
+1. Phishing emails referencing legitimate employee URLs for credibility
+2. API enumeration for authentication bypass vulnerabilities
 3. Credential harvesting targeting employee discount portals
 4. Social engineering using careers platform information
 
 Finding 3: Testing & Development Environment Exposure
 
 Discovered Non-Production Environments:
-\`\`\`
-beta.gucci.com - Beta testing environment
-\`\`\`
+Beta testing environment and development infrastructure publicly accessible via DNS.
 
 Concerns:
 - Development environments often have weaker security
@@ -722,12 +716,8 @@ Concerns:
 
 Finding 4: Authentication Infrastructure Enumeration
 
-Discovered Identity/Auth Subdomains:
-\`\`\`
-identity.gucci.com - Identity management platform
-login.gucci.com - Authentication portal
-authenticate.gucci.com - SSO/authentication service
-\`\`\`
+Discovered Identity/Auth Infrastructure:
+Multiple authentication-related subdomains discovered including identity management platform, authentication portals, and SSO/authentication service endpoints.
 
 Impact:
 - Complete authentication architecture enumerable
@@ -737,20 +727,15 @@ Impact:
 - Enables targeted credential stuffing campaigns
 
 Attack Scenarios:
-1. Credential stuffing against login.gucci.com
-2. SSO bypass attempts on authenticate.gucci.com
+1. Credential stuffing against authentication portals
+2. SSO bypass attempts on authentication services
 3. Identity platform reconnaissance for vulnerabilities
 4. Password reset flow manipulation across multiple portals
 
 Finding 5: API & Media Infrastructure
 
-Discovered Technical Subdomains:
-\`\`\`
-api.gucci.com - Primary API gateway
-api-map.gucci.com - Mapping/geolocation API
-catalog.gucci.com - Product catalog system
-media.gucci.com - Media asset delivery
-\`\`\`
+Discovered Technical Infrastructure:
+Multiple technical subdomains discovered including primary API gateway, geolocation/mapping services, product catalog system, and media asset delivery infrastructure.
 
 Technical Details:
 - API gateway architecture revealed
@@ -778,27 +763,27 @@ Manual security header review required to assess defensive posture.
 
 Complete Subdomain Inventory (50+ discovered):
 
-Critical:
-- internal.gucci.com
-- board.gucci.com
-- employeestore.gucci.com
-- employeestore-api.gucci.com
+Critical Risk (4 subdomains):
+- Internal corporate infrastructure
+- Executive/board portal
+- Employee discount store portal
+- Employee store API endpoint
 
-High:
-- beta.gucci.com
-- identity.gucci.com
-- login.gucci.com
-- authenticate.gucci.com
+High Risk (4+ subdomains):
+- Beta testing environment
+- Identity management platform
+- Authentication portals (multiple)
+- SSO/authentication services
 
-Medium:
-- api.gucci.com
-- api-map.gucci.com
-- catalog.gucci.com
-- media.gucci.com
-- careers.gucci.com
+Medium Risk (10+ subdomains):
+- Primary API gateway
+- Geolocation/mapping APIs
+- Product catalog system
+- Media delivery CDN
+- HR/recruiting platform
 
-Low:
-- changemakerschallenge.gucci.com (marketing)
+Low Risk (30+ subdomains):
+- Marketing campaign sites
 - Various regional/language subdomains
 
 Certificate Information:
@@ -817,17 +802,17 @@ Impact:
 Attack Surface Summary:
 
 Total Discovered: 50+ subdomains
-Critical Risk: 4 subdomains (internal/board/employee infrastructure)
-High Risk: 8 subdomains (auth/dev environments)
-Medium Risk: 10+ subdomains (APIs/media/technical)
-Low Risk: 30+ subdomains (marketing/regional)
+Critical Risk: 4 subdomains (internal infrastructure, executive portals, employee systems)
+High Risk: 4+ subdomains (authentication infrastructure, dev environments)
+Medium Risk: 10+ subdomains (APIs, media delivery, technical infrastructure)
+Low Risk: 30+ subdomains (marketing campaigns, regional sites)
 
 Remediation Priority Matrix:
 
 Immediate (Week 1):
-1. Audit internal.gucci.com and board.gucci.com accessibility
+1. Audit internal infrastructure and executive portal accessibility
 2. Implement IP allowlisting for employee portals
-3. Verify beta.gucci.com is properly secured or decommissioned
+3. Verify beta/development environments are properly secured or decommissioned
 4. Review authentication subdomain attack surface
 
 Short-Term (Month 1):
