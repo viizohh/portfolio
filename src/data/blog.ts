@@ -9,6 +9,12 @@ export interface BlogEntry {
 
 export const blogEntries: BlogEntry[] = [
   {
+    id: '4',
+    date: '2026-05-27',
+    title: "first entry",
+    content: "hey! welcome to my blog, this is apart from my portfolio just to say what I'm doing during a day or what I'm learning / testing thanks for finding this!\n\nhunter",
+  },
+{
     id: '3',
     date: '2026-05-27',
     title: "first entry",
