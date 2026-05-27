@@ -129,7 +129,9 @@ export default function MonthPage() {
   }, [])
 
   return (
-    <div className="min-h-screen pt-20 relative overflow-hidden">
+    <div className="min-h-screen pt-20 relative overflow-auto scrollbar-hide" style={{
+      WebkitOverflowScrolling: 'touch'
+    }}>
       {/* Background fixed corner months */}
       <div className="fixed inset-0 z-0 opacity-30">
         {backgroundMonths.map((m, i) => (
@@ -159,7 +161,7 @@ export default function MonthPage() {
 
           {/* Floating day entries */}
           {hasEntries ? (
-            <div className="fixed inset-0 z-20">
+            <div className="absolute z-20" style={{ minWidth: '200vw', minHeight: '200vh', left: '-50vw', top: '-50vh' }}>
               {daysWithEntries.map((day, index) => {
                 // Generate random position around center
                 const angle = (Math.random() * Math.PI * 2)
