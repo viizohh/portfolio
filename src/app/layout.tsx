@@ -3,7 +3,7 @@ import './globals.css'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
-  title: 'Cybersecurity Archive — Portfolio',
+  title: "Hunter's Portfolio",
   description: 'A curated archive of cybersecurity research, vulnerabilities, projects, and findings',
   keywords: ['cybersecurity', 'pentesting', 'security research', 'vulnerabilities', 'bug bounty'],
 }
