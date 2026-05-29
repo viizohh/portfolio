@@ -556,88 +556,37 @@ Severity: Medium (CVSS 5.5)
 Target: Supreme.com streetwear e-commerce platform
 
 Discovery:
-Passive reconnaissance assessment identified multiple information disclosure vectors and missing defensive security headers on Supreme's Next.js-based e-commerce platform.
+Passive reconnaissance assessment identified missing defensive security headers and information disclosure on Supreme's e-commerce platform.
 
-Finding 1: Technology Stack Information Disclosure
+Findings:
 
-Exposed Headers:
-\`\`\`
-X-Powered-By: Next.js
-Server: cloudflare
-X-Vercel-Cache: HIT
-X-Vercel-Id: iad1::iad1::fjvxw-1777398622977-104bf62ee7e1
-\`\`\`
+Missing Security Headers:
+- No Content-Security-Policy header implemented
+- Missing X-Frame-Options header
+- Missing Referrer-Policy header
 
-Impact:
-- Framework identification enables targeted reconnaissance
-- Vercel deployment metadata leaks infrastructure details
-- Attackers can focus on Next.js-specific vulnerabilities
-- Regional deployment information revealed (iad1 = Virginia datacenter)
+Information Disclosure:
+- HTTP response headers expose framework and hosting infrastructure details
+- 19 publicly enumerable subdomains discovered via passive reconnaissance
+- Third-party tracking implementations identified
 
-Finding 2: Missing Content-Security-Policy
+Quantifiable Impact:
 
-Security Assessment:
-- No CSP header present
-- No X-Frame-Options (clickjacking risk)
-- No Referrer-Policy (information leakage)
-- HSTS implemented (max-age=31536000)
+Attack Surface Expansion:
+- 19 discoverable subdomains increase potential attack vectors
+- Multiple regional authentication portals create phishing opportunities
+- Payment infrastructure endpoints publicly enumerable
 
-Impact:
-- No defense-in-depth against XSS attacks
-- Malicious scripts can execute without CSP restrictions
-- No protection against clickjacking attacks
-- Limited ability to restrict resource loading
+Security Posture Gaps:
+- Zero XSS protection from Content-Security-Policy absence
+- Clickjacking attacks possible without X-Frame-Options
+- Information leakage risk from missing Referrer-Policy
+- Framework-specific vulnerabilities easier to target with disclosed stack information
 
-Finding 3: Subdomain Enumeration
-
-Discovered Subdomains (19 total):
-- Regional sites: cn.supreme.com, hk.supreme.com, jp.supreme.com, kr.supreme.com, eu.supreme.com, uk.supreme.com, us.supreme.com
-- Account portals: account.eu.supreme.com, account.jp.supreme.com, account.uk.supreme.com, account.us.supreme.com
-- WeChat integration: wechat.supreme.com
-- Payment infrastructure: secure.supreme.com
-- Product management: pdm.supreme.com
-
-Attack Surface:
-- 19 publicly enumerable subdomains via certificate transparency
-- Multiple regional authentication portals (phishing target)
-- WeChat integration endpoint (China market attack vector)
-- Expanded attack surface for credential harvesting
-
-Finding 4: Third-Party Tracking
-
-Identified Trackers:
-- Google Analytics GA4: G-YXLMT5H68B
-- Data transmission to www.google-analytics.com/g/collect
-- GDPR/CCPA compliance considerations
-
-Technical Details:
-
-Technology Stack:
-- Frontend Framework: Next.js (React-based)
-- Hosting: Vercel (edge functions + CDN)
-- CDN: Cloudflare (DDoS protection layer)
-- Analytics: Google Analytics GA4
-
-CVE Research:
-Analyzed disclosed framework version against known vulnerabilities:
-- CVE-2025-55182 (Critical RCE) - Requires specific Next.js version (not confirmed)
-- CVE-2025-29927 (Middleware bypass) - Mitigated by Vercel edge firewall
-- No exploitable CVE identified without version confirmation
-
-Remediation:
-
-Immediate Actions:
-1. Remove X-Powered-By header (obscurity, minimal security impact)
-2. Suppress Vercel debugging headers in production
-3. Implement Content-Security-Policy with nonces/hashes
-4. Add X-Frame-Options: DENY or SAMEORIGIN
-5. Implement Referrer-Policy: strict-origin-when-cross-origin
-
-Long-Term Improvements:
-1. Subdomain inventory and decommissioning audit
-2. Regional portal consolidation to reduce attack surface
-3. Web Application Firewall (WAF) rules for known attack patterns
-4. Security header monitoring and enforcement
+Business Risk:
+- E-commerce platform handling customer payment data lacks defense-in-depth headers
+- Multiple regional portals (US, EU, JP, CN, UK) all inherit same security gaps
+- Account management systems across regions vulnerable to same attack classes
 
 Disclosure:
 Findings documented as part of luxury retail security assessment. Passive reconnaissance only - no active exploitation attempted.`,
@@ -659,129 +608,36 @@ Severity: Medium (CVSS 5.3)
 Target: Off-White.com luxury fashion e-commerce platform
 
 Discovery:
-Passive security assessment of Off-White's e-commerce platform revealing missing defensive headers and extensive cloud infrastructure exposure through HTTP response analysis.
+Passive security assessment revealing missing defensive headers and cloud infrastructure exposure through HTTP response analysis.
 
-Finding 1: Missing Content-Security-Policy
+Findings:
 
-Security Header Assessment:
-- No Content-Security-Policy implemented
-- HSTS present (max-age=15552000)
-- X-Frame-Options: SAMEORIGIN
-- X-Content-Type-Options: nosniff
-- Referrer-Policy: strict-origin-when-cross-origin
+Missing Content-Security-Policy:
+- No Content-Security-Policy header implemented
+- Other defensive headers present (HSTS, X-Frame-Options, nosniff, referrer policy)
 
-Impact:
-- No defense-in-depth against XSS attacks
-- Malicious scripts can execute without CSP restrictions
-- Inline script injection possible
-- No resource loading restrictions
+Infrastructure Exposure:
+- HTTP response headers expose cloud provider and architecture details
+- Platform and framework information disclosed via custom headers
+- Regional deployment information enumerable
 
-CSP Missing Protections:
-- No script-src directive (any script can load)
-- No connect-src restrictions (API exfiltration risk)
-- No frame-ancestors control beyond X-Frame-Options
-- No upgrade-insecure-requests enforcement
+Quantifiable Impact:
 
-Finding 2: AWS Infrastructure Exposure
+Security Posture Gaps:
+- Zero XSS protection from Content-Security-Policy absence
+- Inline script injection possible without CSP restrictions
+- No resource loading restrictions enabling third-party script risks
 
-Identified Cloud Architecture:
-\`\`\`
-X-Amz-Cf-Pop: IAD89-P2
-X-Amz-Cf-Id: [redacted]
-X-Amz-Request-Id: [request identifiers]
-\`\`\`
+Information Disclosure Risk:
+- Cloud architecture details aid targeted reconnaissance
+- Platform-specific vulnerabilities easier to research and target
+- Dual CDN architecture complexity exposed
+- Regional deployment information assists compliance mapping
 
-Revealed Infrastructure:
-- CDN: AWS CloudFront (fronted by Cloudflare)
-- Region: IAD (US East - Virginia)
-- API Gateway: AWS API Gateway detected
-- Distribution: Multi-region CloudFront distribution
-
-Impact:
-- AWS architecture enumeration aids targeted attacks
-- CloudFront distribution configuration can be analyzed
-- Regional deployment information assists in compliance mapping
-- Dual CDN setup (Cloudflare → CloudFront) reveals architecture complexity
-
-Finding 3: Salesforce Commerce Cloud PWA Detection
-
-Technology Fingerprinting:
-\`\`\`
-X-Mobify-Request-Class: SPLASH-US-DEF
-\`\`\`
-
-Revealed Technology:
-- Platform: Salesforce Commerce Cloud (Demandware)
-- PWA Framework: Mobify (Salesforce PWA Kit)
-- Request Classification: SPLASH-US-DEF (US default splash configuration)
-
-Attack Surface:
-- Known Salesforce Commerce Cloud vulnerabilities can be targeted
-- Mobify PWA specific security issues may apply
-- Request classification header reveals routing logic
-- Platform-specific reconnaissance enabled
-
-Finding 4: Certificate Transparency Parsing Limitation
-
-Subdomain Enumeration:
-- Certificate transparency log parsing failed
-- Possible certificate pinning or minimal SAN entries
-- Subdomain attack surface unknown (could be extensive)
-- Requires alternative enumeration methods for complete assessment
-
-Attack Scenarios:
-
-1. XSS Without CSP:
-- Malicious script injection in user-generated content
-- Reflected XSS in search parameters
-- DOM-based XSS without CSP protection
-- Third-party script compromise (supply chain attack)
-
-2. Infrastructure-Targeted Attacks:
-- CloudFront misconfigurations (S3 bucket exposure)
-- AWS API Gateway enumeration
-- Salesforce Commerce Cloud specific exploits
-- Mobify PWA security issues
-
-3. Regional Exploitation:
-- Target IAD region specifically
-- CloudFront cache poisoning attempts
-- Region-specific compliance violations
-
-Technical Details:
-
-Technology Stack:
-- Platform: Salesforce Commerce Cloud
-- PWA: Mobify/Salesforce PWA Kit
-- Cloud: AWS (API Gateway, CloudFront)
-- CDN: Cloudflare (primary) + CloudFront (origin)
-- Region: US East (Virginia)
-
-Security Posture:
-- Strong foundation (HSTS, X-Frame-Options, nosniff, referrer policy)
-- Missing CSP (critical XSS defense gap)
-- Extensive infrastructure fingerprinting possible
-- Dual CDN architecture adds complexity
-
-Remediation:
-
-Immediate Actions (Week 1):
-1. Implement Content-Security-Policy in report-only mode
-2. Analyze CSP violation reports for 2 weeks
-3. Remove or obfuscate X-Mobify-Request-Class header
-4. Suppress AWS-specific headers (X-Amz-Cf-Pop, X-Amz-Cf-Id)
-
-Short-Term (Month 1):
-1. Deploy CSP in enforcement mode with strict directives
-2. Implement header obfuscation at Cloudflare layer
-3. Review CloudFront distribution security configuration
-4. Audit Salesforce Commerce Cloud security settings
-
-Long-Term:
-1. Subdomain enumeration using alternative methods
-2. Complete attack surface mapping
-3. Third-party security review of Mobify PWA implementation
-4. AWS infrastructure hardening audit
+Business Risk:
+- E-commerce platform processing payments lacks CSP defense-in-depth
+- Extensive infrastructure fingerprinting possible via HTTP headers
+- Platform and framework disclosure enables targeted attack research
 
 Disclosure:
 Findings documented as part of luxury retail security assessment. Passive reconnaissance only - no authorization testing performed.`,
