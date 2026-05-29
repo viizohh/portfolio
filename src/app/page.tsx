@@ -16,6 +16,7 @@ const INITIAL_SECTIONS = [
 export default function HomePage() {
   const [sections, setSections] = useState(INITIAL_SECTIONS)
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
+  const [viewMode, setViewMode] = useState<'scatter' | 'hierarchy'>('scatter')
 
   // Group items by category
   const getItemsByCategory = (category: string) => {
@@ -38,6 +39,10 @@ export default function HomePage() {
     })
   }
 
+  const toggleViewMode = () => {
+    setViewMode(prev => prev === 'scatter' ? 'hierarchy' : 'scatter')
+  }
+
   return (
     <div className="h-screen overflow-hidden relative">
       {/* Interactive speaker navigation with sections */}
@@ -47,6 +52,8 @@ export default function HomePage() {
         onSpeakerClick={handleSpeakerClick}
         expandedSections={expandedSections}
         getItemsByCategory={getItemsByCategory}
+        viewMode={viewMode}
+        onViewModeToggle={toggleViewMode}
       />
     </div>
   )

@@ -18,14 +18,144 @@ export interface PortfolioItem {
 export const portfolioItems: PortfolioItem[] = [
   // SECTION 001 - PROJECTS (Most recent first)
   {
+    id: '19',
+    title: 'Network Traffic Analyzer with AI Diagnoser',
+    slug: 'network-traffic-analyzer-ai',
+    category: 'project',
+    description: 'Real-time network traffic monitoring system with AI-powered threat detection and analysis',
+    technologies: ['Python', 'Scapy', 'AWS', 'Machine Learning', 'Flask', 'PCAP'],
+    featured: true,
+    content: `Automated network traffic analyzer that captures, processes, and analyzes network packets in real-time with planned AI integration for threat detection.
+
+Current Implementation:
+
+The system is built around Scapy's sniff() function which interfaces with the OS packet capture facility. Requires elevated privileges to access raw network packets from specified interfaces. Live monitoring displays TCP connection states and data volumes from their respective addresses in real time.
+
+Key Features:
+
+Live Sniffing Capabilities:
+- Real-time network traffic monitoring across specified interfaces
+- TCP/UDP connection state tracking
+- DNS, HTTP/HTTPS, ARP broadcast capture
+- Device-level filtering (--device flag)
+- Verbose mode for detailed packet inspection
+
+Packet Processing Chain:
+The _process_packet() method triggers on each captured packet, applying device-level filtering if specified. In --show-all mode, layer-specific details are extracted from Scapy packet objects and formatted for display (e.g., [TCP] 192.168.1.100:54321 -> 172.217.164.110:443).
+
+Current Limitations:
+UDP information shows intermittently - working on consistent verbose command display across all protocol types.
+
+Example Usage:
+\`\`\`bash
+sniff live --iface en0 --show-all
+\`\`\`
+
+This command monitors all network traffic on the en0 interface, showing detailed packet information for DNS, HTTP/HTTPS, TCP, UDP, and ARP broadcasts.
+
+In Development:
+
+PCAP Export:
+Creating PCAP file output for easier offline analysis and model training. Files will be timestamped and organized for historical analysis.
+
+Real-time Dashboard:
+Building a user interface beyond terminal output for better UX. Dashboard will include traffic graphs, connection maps, and alert panels.
+
+AI Model Integration:
+Planning integration of a model trained to analyze traffic patterns for suspicious behavior. The model will provide detailed analysis with thought process explanations. May include a Q&A interface for asking questions about specific traffic patterns.
+
+Pattern Detection:
+Hardcoded rule-based detection for common suspicious patterns (port scanning, unusual DNS queries, data exfiltration indicators). This pre-filters information sent to the AI model to reduce token usage and improve response times.
+
+Technical Details:
+
+- Built with Python and Scapy for packet capture
+- Processes packets at wire speed using callback architecture
+- Supports multiple network interfaces simultaneously
+- Protocol-agnostic design handles TCP, UDP, ICMP, ARP, DNS, HTTP/HTTPS
+- Command-line flags for filtering and verbosity control
+
+Project Status:
+Core functionality complete and working. Network analyzer successfully captures and displays live traffic. AI integration and dashboard UI are next priorities. On track for completion with all planned features by class deadline, though AI model implementation may be scaled based on token usage requirements during testing phase.`,
+    publishedAt: '2026-05-01',
+  },
+  {
     id: '5',
-    title: 'Capital One Document Validation',
+    title: 'Capital One Document Processing System',
     slug: 'capital-one-doc-validation',
     category: 'project',
-    description: 'Automated document validation system for financial processing',
-    technologies: ['Python', 'OCR', 'Document Processing'],
-    featured: false,
-    content: 'Automated document validation system developed for financial document processing. Uses OCR and machine learning to validate document authenticity and extract structured data.',
+    description: 'Serverless document processing pipeline using AWS Lambda, S3, and OCR for automated text extraction',
+    technologies: ['Python', 'AWS Lambda', 'AWS S3', 'AWS DynamoDB', 'Tesseract OCR', 'OpenCV'],
+    featured: true,
+    content: `Automated document processing system that extracts text from uploaded files using OCR and stores results in a database. Built entirely on AWS serverless architecture for cost efficiency and scalability.
+
+How It Works:
+
+Upload Flow:
+1. User uploads PDF or image file to S3 bucket
+2. S3 triggers Lambda function automatically on new file detection
+3. Lambda downloads file and runs OCR (Tesseract) to extract text
+4. Extracted text and metadata (filename, size, upload time) saved to DynamoDB
+5. System returns to idle state until next upload
+
+Architecture:
+
+The system is fully event-driven - Lambda functions only run when files are uploaded, keeping costs minimal. No servers to manage or maintain.
+
+AWS Services:
+- S3: File storage and trigger source
+- Lambda: Serverless OCR processing
+- DynamoDB: Extracted text and metadata storage
+- IAM: Secure service-to-service authentication
+
+Processing Pipeline:
+- Tesseract OCR: Text extraction engine
+- OpenCV: Image preprocessing for better OCR accuracy
+- Python: Glue code orchestrating the pipeline
+
+Supported File Types:
+- PDF documents
+- PNG, JPG, JPEG images
+- TIFF, BMP files
+
+Current Features:
+
+- Fully automated after upload - no manual intervention
+- Event-driven architecture (only runs when needed)
+- Cost-efficient (pay per execution, not per hour)
+- Multi-format support
+- Metadata tracking (upload time, file size, processing status)
+
+In Development:
+
+Immediate Priorities:
+- Deploy to AWS production environment (working on group access permissions)
+- Thorough testing with different file types and text quality
+- Front-end interface for file upload and search
+- Search functionality across extracted text
+- API endpoints for programmatic access
+- Better error handling and retry logic
+
+Considering:
+- User authentication/login system (if time permits)
+- Document categorization and tagging
+- Batch file upload support
+- Analytics dashboard (error rates, processing times, success metrics)
+
+Technical Challenges Solved:
+
+- Lambda cold start optimization for faster first runs
+- Image preprocessing for low-quality scans
+- Handling multi-page PDFs efficiently
+- DynamoDB schema design for fast text search
+- S3 event filtering to avoid processing loops
+
+Why This Architecture:
+
+Chose serverless specifically to avoid infrastructure overhead. No servers means no patching, no capacity planning, no paying for idle time. Lambda scales automatically from 1 to 1000s of concurrent executions without configuration.
+
+Project Status:
+Core functionality built and tested locally. OCR extraction working reliably across file types. Next step is AWS deployment and building the front-end search interface.`,
     publishedAt: '2026-12-01',
   },
   {
@@ -104,7 +234,7 @@ Responsibilities:
 
 Background:
 Transitioning from 6 years of summer internship experience to full-time cybersecurity engineering role, bringing expertise in NIST RMF, STIG compliance validation, and defensive security operations.`,
-    publishedAt: '2026-01-01',
+    publishedAt: '2026-06-01',
   },
   {
     id: '6',
@@ -139,13 +269,17 @@ Key Achievements:
     slug: 'lockheed-martin-intern',
     category: 'internship',
     logo: '/images/Lockheed-Martin-Logo.jpg',
-    description: 'Multi-summer cybersecurity internship focusing on NIST RMF, STIG validation, and threat modeling',
+    description: 'Multi-summer cybersecurity internship focusing on NIST RMF, STIG validation, and threat modeling - Won 1st place in intern project competition twice',
     technologies: ['NIST RMF', 'DISA STIG', 'Python', 'Nessus Tenable', 'OWASP ZAP', 'MITRE ATT&CK'],
     featured: true,
     dateRange: '2020-2025',
     content: `Position: Software/Cyber Engineering Intern
 Duration: June 2020 - 2025 (Summer Internship)
-Clearance: Security+
+Clearance: Secret
+Certification: Security+
+
+Intern Competition:
+Won 1st place in Lockheed Martin's intern project competition twice during the internship program. Competed against interns across multiple business areas with projects focused on cybersecurity automation and threat detection.
 
 Responsibilities:
 - Developed and maintained 3-5 System Security Plans (SSPs) under NIST Risk Management Framework
@@ -155,9 +289,13 @@ Responsibilities:
 - Participated in red team exercises and threat modeling workshops
 
 Key Achievements:
+- Won 1st place in intern project competition (2x)
 - Maintained 100% compliance on SSP audits
 - Automated STIG validation reducing review time by 40%
-- Developed reusable threat modeling framework adopted by team`,
+- Developed reusable threat modeling framework adopted by team
+
+Technical Impact:
+The internship spanned 6 summers, providing continuity on security initiatives and allowing progression from foundational STIG validation work to advanced threat modeling and automation development. Competition wins recognized innovative approaches to security automation and practical tools that improved team efficiency.`,
     publishedAt: '2020-06-01',
   },
 

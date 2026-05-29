@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import HierarchicalGraph from './HierarchicalGraph'
 
 // Color palette
 const PALETTE = [
@@ -276,8 +275,6 @@ interface SpeakerNavProps {
   onSpeakerClick: (sectionId: string) => void
   expandedSections: Set<string>
   getItemsByCategory: (category: string) => any[]
-  viewMode: 'scatter' | 'hierarchy'
-  onViewModeToggle: () => void
 }
 
 interface SpeakerData {
@@ -302,9 +299,7 @@ export default function InteractiveSpeakerNav({
   onSectionOrderChange,
   onSpeakerClick,
   expandedSections,
-  getItemsByCategory,
-  viewMode,
-  onViewModeToggle
+  getItemsByCategory
 }: SpeakerNavProps) {
   const iconsRef = useRef<Map<string, string>>(new Map())
   const petalIconsRef = useRef<Map<string, string>>(new Map())
@@ -394,58 +389,20 @@ export default function InteractiveSpeakerNav({
     return null
   }
 
-  // Show hierarchy view
-  if (viewMode === 'hierarchy') {
-    return (
-      <>
-        <HierarchicalGraph
-          sections={sections}
-          getItemsByCategory={getItemsByCategory}
-        />
-
-        {/* View toggle button */}
-        <div className="fixed top-24 right-6 z-[60] flex flex-col gap-2 items-end">
-          <button
-            onClick={onViewModeToggle}
-            className="text-xs font-mono text-muted hover:text-foreground transition-colors duration-300"
-          >
-            scatter
-          </button>
-          <button
-            onClick={handleShuffle}
-            className="text-xs font-mono text-muted hover:text-foreground transition-colors duration-300"
-          >
-            shuffle
-          </button>
-        </div>
-      </>
-    )
-  }
-
-  // Show scatter view (default)
   return (
     <>
-      {/* Decorative floating nodes in background - fixed to full viewport */}
-      <div className="fixed top-0 left-0 right-0 bottom-0 z-[75] overflow-hidden pointer-events-none">
+      {/* Decorative floating nodes in background */}
+      <div className="fixed top-20 left-0 right-0 bottom-0 z-0 pointer-events-none">
         {decorativeNodes.map((node, i) => (
-          <motion.div
+          <div
             key={`deco-${i}`}
-            className="absolute opacity-10"
+            className="absolute opacity-20 animate-float"
             style={{
               left: node.x,
               top: node.y,
-            }}
-            animate={{
-              y: [0, -80, -40, -100, 0],
-              x: [0, 40, -20, 30, 0],
-              rotate: [0, 15, -10, 20, 0],
-              scale: [1, 1.1, 0.9, 1.05, 1],
-            }}
-            transition={{
-              duration: 10 + (i % 10),
-              repeat: Infinity,
-              delay: node.delay,
-              ease: "easeInOut"
+              transform: 'translate(-50%, -50%)',
+              animationDelay: `${node.delay}s`,
+              animationDuration: `${10 + (i % 5)}s`,
             }}
             dangerouslySetInnerHTML={{ __html: node.svg }}
           />
@@ -453,7 +410,7 @@ export default function InteractiveSpeakerNav({
       </div>
 
       {/* Interactive navigation - speaker icons */}
-      <div className="fixed top-20 left-0 right-0 bottom-0 z-[50] bg-background/95 backdrop-blur-sm overflow-auto">
+      <div className="fixed top-20 left-0 right-0 bottom-0 z-40 bg-background/95 backdrop-blur-sm">
         {speakers.map((speaker) => {
           const isExpanded = expandedSections.has(speaker.section.id)
           const items = getItemsByCategory(speaker.section.category)
@@ -462,7 +419,7 @@ export default function InteractiveSpeakerNav({
           return (
           <motion.div
             key={speaker.section.id}
-            className="absolute z-[60]"
+            className="absolute"
             style={{
               left: speaker.x,
               top: speaker.y,
@@ -662,13 +619,7 @@ export default function InteractiveSpeakerNav({
       </div>
 
       {/* Shuffle button - outside nav container to have independent z-index */}
-      <div className="fixed top-24 right-6 z-[60] flex flex-col gap-2 items-end">
-        <button
-          onClick={onViewModeToggle}
-          className="text-xs font-mono text-muted hover:text-foreground transition-colors duration-300"
-        >
-          {viewMode === 'scatter' ? 'hierarchy' : 'scatter'}
-        </button>
+      <div className="fixed top-24 right-6 z-[60]">
         <button
           onClick={handleShuffle}
           className="text-xs font-mono text-muted hover:text-foreground transition-colors duration-300"
