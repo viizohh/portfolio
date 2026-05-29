@@ -28,12 +28,13 @@ export default function Header() {
           >
             About
           </Link>
-          <Link
+          {/* Blog link hidden - see BLOG_MANAGEMENT.md for restoration instructions */}
+          {/* <Link
             href="/blog"
             className="text-foreground hover:text-muted transition-colors duration-300 text-sm"
           >
             Blog
-          </Link>
+          </Link> */}
           <Link
             href="/contact"
             className="text-foreground hover:text-muted transition-colors duration-300 text-sm"

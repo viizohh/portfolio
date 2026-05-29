@@ -219,7 +219,6 @@ export default function MonthPage() {
               </p>
             </div>
           )}
-        </div>
       </div>
     </div>
   )
