@@ -199,7 +199,7 @@ Core functionality built and tested locally. OCR extraction working reliably acr
     description: 'Google Chrome extension that scans websites for tracker cookies and data rights violations',
     technologies: ['JavaScript', 'Chrome Extensions', 'Privacy', 'Data Rights'],
     featured: false,
-    content: 'Google Chrome extension that scans each website for tracker cookies and cookies that violate data rights regulations. Exports findings into a spreadsheet for easy analysis and helps users understand their digital footprint and privacy risks.',
+    content: 'Google Chrome extension that scans each website for tracker cookies and cookies that violate data rights regulations. Exports findings into a spreadsheet for easy analysis and helps users understand their digital footprint and privacy risks. Used to identify data privacy violations in LinkedIn, MSCHF, and New York Times.',
     publishedAt: '2025-04-01',
   },
 
