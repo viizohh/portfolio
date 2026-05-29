@@ -125,14 +125,14 @@ Current Features:
 - Cost-efficient (pay per execution, not per hour)
 - Multi-format support
 - Metadata tracking (upload time, file size, processing status)
+- Front-end search interface for file upload and text search
+- Search functionality across all extracted document text
 
 In Development:
 
 Immediate Priorities:
 - Deploy to AWS production environment (working on group access permissions)
 - Thorough testing with different file types and text quality
-- Front-end interface for file upload and search
-- Search functionality across extracted text
 - API endpoints for programmatic access
 - Better error handling and retry logic
 
@@ -155,7 +155,7 @@ Why This Architecture:
 Chose serverless specifically to avoid infrastructure overhead. No servers means no patching, no capacity planning, no paying for idle time. Lambda scales automatically from 1 to 1000s of concurrent executions without configuration.
 
 Project Status:
-Core functionality built and tested locally. OCR extraction working reliably across file types. Next step is AWS deployment and building the front-end search interface.`,
+Core functionality built and tested locally. OCR extraction working reliably across file types. Front-end search interface completed. Next step is AWS production deployment.`,
     publishedAt: '2026-12-01',
   },
   {
