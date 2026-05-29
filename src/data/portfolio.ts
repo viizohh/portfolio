@@ -193,13 +193,13 @@ Core functionality built and tested locally. OCR extraction working reliably acr
   },
   {
     id: '3',
-    title: 'CookieTracker',
+    title: 'Cookie Tracker',
     slug: 'cookie-tracker',
     category: 'project',
-    description: 'Browser extension for tracking and analyzing third-party cookies',
-    technologies: ['JavaScript', 'Browser Extensions', 'Privacy'],
+    description: 'Google Chrome extension that scans websites for tracker cookies and data rights violations',
+    technologies: ['JavaScript', 'Chrome Extensions', 'Privacy', 'Data Rights'],
     featured: false,
-    content: 'Browser extension that tracks and analyzes third-party cookies across websites. Provides detailed visualizations of data sharing and helps users understand their digital footprint.',
+    content: 'Google Chrome extension that scans each website for tracker cookies and cookies that violate data rights regulations. Exports findings into a spreadsheet for easy analysis and helps users understand their digital footprint and privacy risks.',
     publishedAt: '2025-04-01',
   },
 
