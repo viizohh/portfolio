@@ -462,7 +462,7 @@ export default function InteractiveSpeakerNav({
           return (
           <motion.div
             key={speaker.section.id}
-            className="absolute z-[60]"
+            className="absolute z-[110]"
             style={{
               left: speaker.x,
               top: speaker.y,
