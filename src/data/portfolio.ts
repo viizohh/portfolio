@@ -762,7 +762,7 @@ Impact:
 - Early detection of ransomware campaigns
 - Reduced dwell time for threat actors
 - Enabled proactive incident response`,
-    publishedAt: '2026-11-01',
+    publishedAt: '2026-04-01',
   },
   {
     id: '14',
