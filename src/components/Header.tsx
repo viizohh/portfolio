@@ -9,35 +9,35 @@ export default function Header() {
         {/* Left: Name/Logo */}
         <Link
           href="/"
-          className="text-foreground font-medium text-sm tracking-tight hover:opacity-60 transition-opacity duration-300"
+          className="text-foreground font-medium text-sm tracking-tight hover:opacity-60 transition-opacity duration-300 bg-background px-2 py-1"
         >
           hunter
         </Link>
 
         {/* Right: Navigation */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="text-foreground hover:text-muted transition-colors duration-300 text-sm"
+            className="text-foreground hover:text-muted transition-colors duration-300 text-sm bg-background px-2 py-1"
           >
             Index
           </Link>
           <Link
             href="/about"
-            className="text-foreground hover:text-muted transition-colors duration-300 text-sm"
+            className="text-foreground hover:text-muted transition-colors duration-300 text-sm bg-background px-2 py-1"
           >
             About
           </Link>
           {/* Blog link hidden - see BLOG_MANAGEMENT.md for restoration instructions */}
           {/* <Link
             href="/blog"
-            className="text-foreground hover:text-muted transition-colors duration-300 text-sm"
+            className="text-foreground hover:text-muted transition-colors duration-300 text-sm bg-background px-2 py-1"
           >
             Blog
           </Link> */}
           <Link
             href="/contact"
-            className="text-foreground hover:text-muted transition-colors duration-300 text-sm"
+            className="text-foreground hover:text-muted transition-colors duration-300 text-sm bg-background px-2 py-1"
           >
             Contact
           </Link>
